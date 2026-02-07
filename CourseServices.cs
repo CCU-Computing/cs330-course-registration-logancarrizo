@@ -44,6 +44,20 @@ foreach(CoreGoal cg in theGoals) {
       {
           return repo.Courses;
       }
+      public List<CourseOffering> getCourseOfferingsBySemester(string semester)
+{
+    List<CourseOffering> results = new List<CourseOffering>();
+
+    foreach (CourseOffering o in repo.Offerings)
+    {
+        if (o.Semester.Equals(semester))
+        {
+            results.Add(o);
+        }
+    }
+
+    return results;
+}
 
         /* As a student, I want to see all available courses so that I know what my options are */
 
