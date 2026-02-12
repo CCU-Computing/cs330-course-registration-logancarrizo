@@ -59,6 +59,24 @@ foreach(CoreGoal cg in theGoals) {
     return results;
 }
 
+ public List<CourseOffering> getCourseOfferingsBySemesterAndDept(string semester, string dept)
+{
+    List<CourseOffering> results = new List<CourseOffering>();
+
+    foreach (CourseOffering o in repo.Offerings)
+    {
+        if (o.Semester.Equals(semester) &&
+            o.TheCourse.Name.StartsWith(dept))
+        {
+            results.Add(o);
+        }
+    }
+
+    return results;
+}
+
+
+
         /* As a student, I want to see all available courses so that I know what my options are */
 
         /* As a student, I want to see all course offerings by semester, so that I can choose from what's
