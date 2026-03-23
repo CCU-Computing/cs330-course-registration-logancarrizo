@@ -1,101 +1,64 @@
-using System;
 using System.Collections.Generic;
 
 namespace cs330_proj1
 {
-    public class CourseServices
+    public class CourseServices : ICourseServices
     {
-        private CourseRepository repo = new CourseRepository();
+        private readonly ICourseRepository repo;
 
-
-        //As a student, I want to search for course offerings that meet core goals 
-        // so that I can register easily for courses that meet my program requirements
-         public List<CourseOffering> getOfferingsByGoalIdAndSemester(String theGoalId, String semester) {
-          //use the repo to get the data from the database (data store)
-List<CoreGoal> theGoals = repo.Goals;
-List<CourseOffering> theOfferings = repo.Offerings;
-            
-//Complete any other required functionality/business logic to satisfy the requirement
-CoreGoal theGoal=null;
-foreach(CoreGoal cg in theGoals) {
- if(cg.Id.Equals(theGoalId)) {
-    theGoal=cg; break;
- 
-  }
-}
- if(theGoal==null) throw new Exception("Didn't find the goal");
- //search list of courses, then for each course, search offerings
- List<CourseOffering> courseOfferingsThatMeetGoal = new List<CourseOffering>();
-            
- foreach(CourseOffering c in theOfferings) {
-     if(c.Semester.Equals(semester) 
-        && theGoal.Courses.Contains(c.TheCourse) ) 
-     {
-        courseOfferingsThatMeetGoal.Add(c);
-     }
- 
- }
- return courseOfferingsThatMeetGoal;
+        public CourseServices(ICourseRepository repo)
+        {
+            this.repo = repo;
         }
 
-        
-        //Add more service functions here, as needed, for the project
-      public List<Course> getCourses()
-      {
-          return repo.Courses;
-      }
-      public List<CourseOffering> getCourseOfferingsBySemester(string semester)
-{
-    List<CourseOffering> results = new List<CourseOffering>();
-
-    foreach (CourseOffering o in repo.Offerings)
-    {
-        if (o.Semester.Equals(semester))
+        public bool UpdateCourseByName(string name, Course modifiedCourse)
         {
-            results.Add(o);
+            return repo.UpdateCourseByName(name, modifiedCourse);
+        }
+
+        public bool DeleteCourseByName(string name)
+        {
+            return repo.DeleteCourseByName(name);
+        }
+
+        public IEnumerable<CoreGoal> GetAllCoreGoals()
+        {
+            return repo.GetAllCoreGoals();
+        }
+
+        public CoreGoal? GetCoreGoalById(string id)
+        {
+            return repo.GetCoreGoalById(id);
+        }
+
+        public CoreGoal? GetCoreGoalWithCoursesById(string id)
+        {
+            return repo.GetCoreGoalWithCoursesById(id);
+        }
+
+        public IEnumerable<Course> GetCoursesForCoreGoalById(string id)
+        {
+            return repo.GetCoursesForCoreGoalById(id);
+        }
+
+        public CoreGoal InsertCoreGoal(CoreGoal newGoal)
+        {
+            return repo.InsertCoreGoal(newGoal);
+        }
+
+        public bool UpdateCoreGoal(string id, CoreGoal modifiedGoal)
+        {
+            return repo.UpdateCoreGoal(id, modifiedGoal);
+        }
+
+        public bool AddCourseToCoreGoal(string id, Course newCourse)
+        {
+            return repo.AddCourseToCoreGoal(id, newCourse);
+        }
+
+        public bool DeleteCoreGoal(string id)
+        {
+            return repo.DeleteCoreGoal(id);
         }
     }
-
-    return results;
-}
-
- public List<CourseOffering> getCourseOfferingsBySemesterAndDept(string semester, string dept)
-{
-    List<CourseOffering> results = new List<CourseOffering>();
-
-    foreach (CourseOffering o in repo.Offerings)
-    {
-        if (o.Semester.Equals(semester) &&
-            o.TheCourse.Name.StartsWith(dept))
-        {
-            results.Add(o);
-        }
-    }
-
-    return results;
-}
-
-
-
-        /* As a student, I want to see all available courses so that I know what my options are */
-
-        /* As a student, I want to see all course offerings by semester, so that I can choose from what's
-           available to register for next semester */
-
-        /* As a student I want to see all course offerings by semester and department so that I can 
-        choose major courses to register for */
-
-        /* As a student I want to see all courses that meet a core goal, so that I can plan out
-           my courses over the next few semesters and choose core courses that make sense for me */
-
-        /* As a student I want to find a course that meets two different core goals, so that I can
-        "feed two birds with one seed" (save time by taking one class that will fulfill two 
-          requirements */
-
-        /* As a freshman adviser, I want to see all the core goals which do not have any course offerings 
-           for a given semester, so that I can work with departments to get some courses offered
-           that students can take to meet those goals */
-
-        
-     }
 }
